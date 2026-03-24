@@ -29,7 +29,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export default function RouteChart({ participants, totalCourses }: RouteChartProps) {
+export default function RouteChart({ participants }: RouteChartProps) {
   const chartData = participants
     .filter(p => p.progress > 0)
     .map(p => ({
@@ -48,33 +48,37 @@ export default function RouteChart({ participants, totalCourses }: RouteChartPro
     { name: "Non iniziato", value: notStarted, color: "#e2e8f0" },
   ];
 
+  const cardStyle = {
+    background: "white",
+    borderRadius: "16px",
+    padding: "20px",
+    border: "1px solid rgba(27,79,138,0.08)",
+    boxShadow: "0 2px 12px rgba(27,79,138,0.06)",
+  };
+
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "24px", alignItems: "start" }}>
+    // Stack vertically on mobile, 2 cols on lg
+    <div className="flex flex-col lg:grid lg:grid-cols-[1fr_300px]" style={{ gap: "16px", alignItems: "start" }}>
+
       {/* Bar Chart */}
-      <div style={{
-        background: "white",
-        borderRadius: "16px",
-        padding: "24px",
-        border: "1px solid rgba(27,79,138,0.08)",
-        boxShadow: "0 2px 12px rgba(27,79,138,0.06)",
-      }}>
-        <h3 style={{ fontSize: "15px", fontWeight: 700, color: "#0f172a", marginBottom: "20px" }}>
+      <div style={cardStyle}>
+        <h3 style={{ fontSize: "14px", fontWeight: 700, color: "#0f172a", marginBottom: "16px" }}>
           Progresso individuale (partecipanti attivi)
         </h3>
         {chartData.length > 0 ? (
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 60 }}>
+          <ResponsiveContainer width="100%" height={260}>
+            <BarChart data={chartData} margin={{ top: 5, right: 5, left: -25, bottom: 55 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
               <XAxis
                 dataKey="name"
-                tick={{ fontSize: 11, fill: "#64748b", fontWeight: 500 }}
+                tick={{ fontSize: 10, fill: "#64748b", fontWeight: 500 }}
                 angle={-35}
                 textAnchor="end"
                 interval={0}
               />
-              <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} domain={[0, 100]} tickFormatter={v => `${v}%`} />
+              <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} domain={[0, 100]} tickFormatter={v => `${v}%`} />
               <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(27,79,138,0.04)" }} />
-              <Bar dataKey="progress" radius={[6, 6, 0, 0]} maxBarSize={40}>
+              <Bar dataKey="progress" radius={[5, 5, 0, 0]} maxBarSize={36}>
                 {chartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
@@ -85,31 +89,25 @@ export default function RouteChart({ participants, totalCourses }: RouteChartPro
             </BarChart>
           </ResponsiveContainer>
         ) : (
-          <div style={{ height: "280px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ height: "260px", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <p style={{ color: "#94a3b8", fontSize: "14px" }}>Nessun partecipante attivo</p>
           </div>
         )}
       </div>
 
       {/* Pie Chart */}
-      <div style={{
-        background: "white",
-        borderRadius: "16px",
-        padding: "24px",
-        border: "1px solid rgba(27,79,138,0.08)",
-        boxShadow: "0 2px 12px rgba(27,79,138,0.06)",
-      }}>
-        <h3 style={{ fontSize: "15px", fontWeight: 700, color: "#0f172a", marginBottom: "20px" }}>
+      <div style={cardStyle}>
+        <h3 style={{ fontSize: "14px", fontWeight: 700, color: "#0f172a", marginBottom: "16px" }}>
           Distribuzione stato
         </h3>
-        <ResponsiveContainer width="100%" height={220}>
+        <ResponsiveContainer width="100%" height={200}>
           <PieChart>
             <Pie
               data={pieData}
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={90}
+              innerRadius={55}
+              outerRadius={82}
               paddingAngle={3}
               dataKey="value"
             >
@@ -119,19 +117,19 @@ export default function RouteChart({ participants, totalCourses }: RouteChartPro
             </Pie>
             <Legend
               iconType="circle"
-              iconSize={8}
+              iconSize={7}
               formatter={(value) => (
-                <span style={{ fontSize: "12px", color: "#475569", fontWeight: 500 }}>{value}</span>
+                <span style={{ fontSize: "11px", color: "#475569", fontWeight: 500 }}>{value}</span>
               )}
             />
             <Tooltip formatter={(value) => [`${value} persone`, ""]} />
           </PieChart>
         </ResponsiveContainer>
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "4px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "7px", marginTop: "8px" }}>
           {pieData.map(item => (
             <div key={item.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: item.color }} />
+              <div style={{ display: "flex", alignItems: "center", gap: "7px" }}>
+                <div style={{ width: "7px", height: "7px", borderRadius: "50%", background: item.color }} />
                 <span style={{ fontSize: "12px", color: "#64748b" }}>{item.name}</span>
               </div>
               <span style={{ fontSize: "13px", fontWeight: 700, color: "#0f172a" }}>{item.value}</span>

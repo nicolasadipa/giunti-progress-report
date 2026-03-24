@@ -21,6 +21,13 @@ const filterLabels: Record<FilterKey, string> = {
   notStarted: "Non iniziati",
 };
 
+const filterLabelsMobile: Record<FilterKey, string> = {
+  all: "Tutti",
+  completed: "✓",
+  inProgress: "⏳",
+  notStarted: "—",
+};
+
 export default function RouteSection({ route, accentColor = "#1B4F8A" }: RouteSectionProps) {
   const stats = getStats(route);
   const [sortBy, setSortBy] = useState<SortKey>("progress");
@@ -96,9 +103,10 @@ export default function RouteSection({ route, accentColor = "#1B4F8A" }: RouteSe
   ];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-      {/* Stats grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+
+      {/* Stats grid: 2 cols on mobile, 4 on desktop */}
+      <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: "12px" }}>
         {statCards.map((card, i) => (
           <StatCard
             key={card.label}
@@ -112,42 +120,71 @@ export default function RouteSection({ route, accentColor = "#1B4F8A" }: RouteSe
         ))}
       </div>
 
-      {/* View toggle + controls */}
-      <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: "12px",
-      }}>
-        {/* Filter tabs */}
-        <div style={{ display: "flex", gap: "6px", background: "white", padding: "4px", borderRadius: "10px", border: "1px solid rgba(27,79,138,0.1)" }}>
-          {(Object.keys(filterLabels) as FilterKey[]).map(key => (
-            <button
-              key={key}
-              onClick={() => setFilter(key)}
-              style={{
-                padding: "6px 14px",
-                borderRadius: "7px",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "13px",
-                fontWeight: 600,
-                background: filter === key ? accentColor : "transparent",
-                color: filter === key ? "white" : "#64748b",
-                transition: "all 0.2s ease",
-              }}
-            >
-              {filterLabels[key]}
-            </button>
-          ))}
+      {/* Controls */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+
+        {/* Row 1: filter tabs + view toggle */}
+        <div className="flex items-center justify-between" style={{ gap: "10px" }}>
+          {/* Filter tabs */}
+          <div className="flex" style={{ gap: "4px", background: "white", padding: "3px", borderRadius: "10px", border: "1px solid rgba(27,79,138,0.1)", overflowX: "auto" }}>
+            {(Object.keys(filterLabels) as FilterKey[]).map(key => (
+              <button
+                key={key}
+                onClick={() => setFilter(key)}
+                style={{
+                  padding: "5px 10px",
+                  borderRadius: "7px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                  background: filter === key ? accentColor : "transparent",
+                  color: filter === key ? "white" : "#64748b",
+                  transition: "all 0.2s ease",
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                }}
+              >
+                <span className="hidden sm:inline" style={{ fontSize: "13px" }}>{filterLabels[key]}</span>
+                <span className="sm:hidden" style={{ fontSize: "12px" }}>{filterLabelsMobile[key]}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* View toggle */}
+          <div style={{ display: "flex", background: "white", border: "1px solid rgba(27,79,138,0.1)", borderRadius: "8px", overflow: "hidden", flexShrink: 0 }}>
+            {[
+              { v: "list", icon: "📋", label: "Lista" },
+              { v: "chart", icon: "📊", label: "Grafici" },
+            ].map(({ v, icon, label }) => (
+              <button
+                key={v}
+                onClick={() => setView(v as "list" | "chart")}
+                style={{
+                  padding: "7px 12px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                  background: view === v ? accentColor : "transparent",
+                  color: view === v ? "white" : "#64748b",
+                  transition: "all 0.2s",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <span style={{ fontSize: "14px" }}>{icon}</span>
+                <span className="hidden sm:inline" style={{ fontSize: "12px" }}>{label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          {/* Search */}
-          <div style={{ position: "relative" }}>
+        {/* Row 2: search + sort */}
+        <div className="flex" style={{ gap: "8px" }}>
+          {/* Search – full width on mobile */}
+          <div style={{ position: "relative", flex: 1 }}>
             <svg
-              width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5"
+              width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5"
               strokeLinecap="round" strokeLinejoin="round"
               style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)" }}
             >
@@ -155,12 +192,12 @@ export default function RouteSection({ route, accentColor = "#1B4F8A" }: RouteSe
             </svg>
             <input
               type="text"
-              placeholder="Cerca..."
+              placeholder="Cerca nome o email..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               style={{
-                paddingLeft: "32px",
-                paddingRight: "14px",
+                paddingLeft: "30px",
+                paddingRight: "12px",
                 paddingTop: "8px",
                 paddingBottom: "8px",
                 borderRadius: "8px",
@@ -169,7 +206,7 @@ export default function RouteSection({ route, accentColor = "#1B4F8A" }: RouteSe
                 color: "#0f172a",
                 background: "white",
                 outline: "none",
-                width: "180px",
+                width: "100%",
               }}
             />
           </div>
@@ -179,7 +216,7 @@ export default function RouteSection({ route, accentColor = "#1B4F8A" }: RouteSe
             value={sortBy}
             onChange={e => setSortBy(e.target.value as SortKey)}
             style={{
-              padding: "8px 12px",
+              padding: "8px 10px",
               borderRadius: "8px",
               border: "1px solid rgba(27,79,138,0.15)",
               fontSize: "13px",
@@ -187,34 +224,13 @@ export default function RouteSection({ route, accentColor = "#1B4F8A" }: RouteSe
               background: "white",
               outline: "none",
               cursor: "pointer",
+              flexShrink: 0,
             }}
           >
-            <option value="progress">Per progresso</option>
-            <option value="name">Per nome</option>
-            <option value="certifiedCourses">Per certificati</option>
+            <option value="progress">Progresso</option>
+            <option value="name">Nome</option>
+            <option value="certifiedCourses">Certificati</option>
           </select>
-
-          {/* View toggle */}
-          <div style={{ display: "flex", background: "white", border: "1px solid rgba(27,79,138,0.1)", borderRadius: "8px", overflow: "hidden" }}>
-            {["list", "chart"].map(v => (
-              <button
-                key={v}
-                onClick={() => setView(v as "list" | "chart")}
-                style={{
-                  padding: "8px 14px",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  background: view === v ? accentColor : "transparent",
-                  color: view === v ? "white" : "#64748b",
-                  transition: "all 0.2s",
-                }}
-              >
-                {v === "list" ? "📋 Lista" : "📊 Grafici"}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -222,31 +238,30 @@ export default function RouteSection({ route, accentColor = "#1B4F8A" }: RouteSe
       {view === "chart" ? (
         <RouteChart participants={route.participants} totalCourses={route.totalCourses} />
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          {/* Header */}
-          <div style={{
-            display: "flex",
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+          {/* Table header – desktop only */}
+          <div className="hidden md:flex" style={{
             alignItems: "center",
-            padding: "8px 20px",
-            gap: "16px",
-            fontSize: "11px",
+            padding: "6px 16px",
+            gap: "14px",
+            fontSize: "10px",
             fontWeight: 700,
             color: "#94a3b8",
             letterSpacing: "0.06em",
             textTransform: "uppercase",
           }}>
             <div style={{ minWidth: "24px" }}>#</div>
-            <div style={{ minWidth: "42px" }} />
+            <div style={{ minWidth: "38px" }} />
             <div style={{ flex: 1 }}>Partecipante</div>
-            <div style={{ width: "140px" }}>Progresso</div>
-            <div style={{ minWidth: "60px", textAlign: "center" }}>Cert.</div>
-            <div style={{ minWidth: "90px" }}>Stato</div>
-            <div style={{ minWidth: "80px", textAlign: "right" }}>Inizio</div>
+            <div style={{ width: "130px" }}>Progresso</div>
+            <div style={{ minWidth: "56px", textAlign: "center" }}>Cert.</div>
+            <div style={{ minWidth: "88px" }}>Stato</div>
+            <div style={{ minWidth: "70px", textAlign: "right" }}>Inizio</div>
           </div>
 
           {filtered.length === 0 ? (
             <div style={{ textAlign: "center", padding: "40px", color: "#94a3b8" }}>
-              <p style={{ fontSize: "16px" }}>Nessun risultato trovato</p>
+              <p style={{ fontSize: "15px" }}>Nessun risultato trovato</p>
             </div>
           ) : (
             filtered.map((p, i) => (
@@ -254,8 +269,10 @@ export default function RouteSection({ route, accentColor = "#1B4F8A" }: RouteSe
                 key={p.id}
                 participant={p}
                 totalCourses={route.totalCourses}
-                rank={sortBy === "progress" && filter === "all" ? route.participants.sort((a,b) => b.progress - a.progress).findIndex(r => r.id === p.id) + 1 : i + 1}
-                delay={i * 40}
+                rank={sortBy === "progress" && filter === "all"
+                  ? [...route.participants].sort((a, b) => b.progress - a.progress).findIndex(r => r.id === p.id) + 1
+                  : i + 1}
+                delay={i * 35}
               />
             ))
           )}

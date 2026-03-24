@@ -41,30 +41,29 @@ export default function StatCard({ label, value, suffix = "", icon, color, delay
       className="card-hover"
       style={{
         background: "white",
-        borderRadius: "16px",
-        padding: "24px",
+        borderRadius: "14px",
         border: "1px solid rgba(27,79,138,0.08)",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(20px)",
         transition: `all 0.6s ease ${delay}ms`,
-        boxShadow: "0 2px 12px rgba(27,79,138,0.06)",
+        boxShadow: "0 2px 8px rgba(27,79,138,0.06)",
       }}
     >
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+      {/* Responsive padding via className */}
+      <div className="p-4 sm:p-5" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
         <div>
-          <p style={{ fontSize: "13px", color: "#64748b", fontWeight: 500, marginBottom: "8px", letterSpacing: "0.02em" }}>
+          <p className="text-xs sm:text-sm" style={{ color: "#64748b", fontWeight: 500, marginBottom: "6px", letterSpacing: "0.02em" }}>
             {label}
           </p>
-          <p style={{ fontSize: "36px", fontWeight: 800, color: "#0f172a", lineHeight: 1 }}>
+          <p className="text-2xl sm:text-4xl" style={{ fontWeight: 800, color: "#0f172a", lineHeight: 1 }}>
             {displayed}
-            <span style={{ fontSize: "18px", color: "#64748b", fontWeight: 600 }}>{suffix}</span>
+            <span className="text-base sm:text-lg" style={{ color: "#64748b", fontWeight: 600 }}>{suffix}</span>
           </p>
         </div>
         <div
+          className="w-9 h-9 sm:w-12 sm:h-12"
           style={{
-            width: "48px",
-            height: "48px",
-            borderRadius: "12px",
+            borderRadius: "10px",
             background: color,
             display: "flex",
             alignItems: "center",
