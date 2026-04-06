@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import RouteSection from "./components/RouteSection";
+import CountdownTimer from "./components/CountdownTimer";
+import TopPlayers from "./components/TopPlayers";
 import { basicRoute, intermediateRoute, getStats } from "./data/reportData";
 
 export default function Home() {
@@ -28,7 +30,7 @@ export default function Home() {
         color: "rgba(255,255,255,0.7)",
         letterSpacing: "0.03em",
       }}>
-        📍 Giunti Psychometrics · Formazione AI · Platzi Business · 2 aprile 2026
+        📍 Giunti Psychometrics · Formazione AI · Platzi Business · 6 aprile 2026
       </div>
 
       {/* Header */}
@@ -87,7 +89,7 @@ export default function Home() {
               border: "1px solid rgba(255,255,255,0.15)",
             }}>
               <span style={{ color: "rgba(255,255,255,0.9)", fontSize: "11px", fontWeight: 600 }}>
-                2 aprile 2026
+                6 aprile 2026
               </span>
             </div>
           </div>
@@ -220,6 +222,8 @@ export default function Home() {
 
       {/* Main content */}
       <main className="mx-auto px-4 sm:px-8 lg:px-10" style={{ maxWidth: "1280px", paddingTop: "28px", paddingBottom: "60px" }}>
+        <CountdownTimer />
+        <TopPlayers />
         {activeTab === "basic" ? (
           <RouteSection route={basicRoute} accentColor="#1B4F8A" />
         ) : (
