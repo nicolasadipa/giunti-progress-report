@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-// Workshop: Wednesday April 8 2026, 10:00 CLT (UTC-3) = 13:00 UTC
-const WORKSHOP_DATE = new Date("2026-04-08T13:00:00Z");
+// Workshop: Wednesday April 8 2026, 10:00 CLT (UTC-4) = 14:00 UTC
+const WORKSHOP_DATE = new Date("2026-04-08T14:00:00Z");
 
 function pad(n: number) {
   return String(n).padStart(2, "0");
@@ -67,7 +67,7 @@ export default function CountdownTimer() {
           <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#0EA5E9", animation: "pulse 1.5s infinite" }} />
           <span style={{ color: "#7dd3fc", fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em" }}>PRÓXIMO EVENTO</span>
         </div>
-        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "11px" }}>Mer 8 apr · 15:00–17:00 h Italia</span>
+        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "11px" }}>Mer 8 apr · 16:00–18:00 h Italia</span>
       </div>
 
       <div className="flex flex-col lg:flex-row lg:items-center" style={{ gap: "20px" }}>
