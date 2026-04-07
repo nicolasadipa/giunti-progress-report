@@ -116,6 +116,16 @@ export function getTopPlayers(limit = 10) {
     const score = totalCerts * 10 + Math.round((basicProgress + interProgress) / 2);
     return { email, name, basicCerts, interCerts, basicProgress, interProgress, totalCerts, score };
   })
-  .sort((a, b) => b.score - a.score)
+  .sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    // Tiebreaker for equal scores — explicit podium order
+    const podium: Record<string, number> = {
+      "stefano.scotto@giuntipsy.com": 1,
+      "jose.grade@giuntipsy.com": 2,
+      "duccio.galli@giuntipsy.com": 3,
+      "venancio.pereira@giuntipsy.com": 4,
+    };
+    return (podium[a.email] ?? 99) - (podium[b.email] ?? 99);
+  })
   .slice(0, limit);
 }
