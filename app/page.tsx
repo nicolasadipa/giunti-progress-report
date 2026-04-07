@@ -30,7 +30,7 @@ export default function Home() {
         color: "rgba(255,255,255,0.7)",
         letterSpacing: "0.03em",
       }}>
-        📍 Giunti Psychometrics · Formazione AI · Platzi Business · 6 aprile 2026
+        📍 Giunti Psychometrics · Formazione AI · Platzi Business · 7 aprile 2026
       </div>
 
       {/* Header */}
@@ -89,7 +89,7 @@ export default function Home() {
               border: "1px solid rgba(255,255,255,0.15)",
             }}>
               <span style={{ color: "rgba(255,255,255,0.9)", fontSize: "11px", fontWeight: 600 }}>
-                6 aprile 2026
+                7 aprile 2026
               </span>
             </div>
           </div>
