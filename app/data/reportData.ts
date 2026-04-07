@@ -120,9 +120,9 @@ export function getTopPlayers(limit = 10) {
     if (b.score !== a.score) return b.score - a.score;
     // Tiebreaker for equal scores — explicit podium order
     const podium: Record<string, number> = {
-      "stefano.scotto@giuntipsy.com": 1,
+      "duccio.galli@giuntipsy.com": 1,
       "jose.grade@giuntipsy.com": 2,
-      "duccio.galli@giuntipsy.com": 3,
+      "stefano.scotto@giuntipsy.com": 3,
       "venancio.pereira@giuntipsy.com": 4,
     };
     return (podium[a.email] ?? 99) - (podium[b.email] ?? 99);
